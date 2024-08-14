@@ -7,10 +7,10 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = "Database"
+BOT_NAME = "Data"
 
-SPIDER_MODULES = ["Database.spiders"]
-NEWSPIDER_MODULE = "Database.spiders"
+SPIDER_MODULES = ["Data.spiders"]
+NEWSPIDER_MODULE = "Data.spiders"
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -62,9 +62,9 @@ ROBOTSTXT_OBEY = True
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "Database.pipelines.DatabasePipeline": 300,
-#}
+ITEM_PIPELINES = {
+    "Data.pipelines.ProcessNumbersPipeline": 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

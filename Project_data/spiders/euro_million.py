@@ -1,5 +1,5 @@
 import scrapy
-from Database.items import DatabaseItem
+from Data.items import Database
 
 
 class EuroMillionSpider(scrapy.Spider):
@@ -27,7 +27,7 @@ class EuroMillionSpider(scrapy.Spider):
         for years_link in list_yaers_links:
             
             yield scrapy.Request(
-                url=f"https://{self.allowed_domains[0]}{years_link}", #"https://www.euro-millions.com/pt/arquivo-de-resultados-2020",   
+                url=f"https://www.euro-millions.com/pt/arquivo-de-resultados-2020",   #"https://{self.allowed_domains[0]}{years_link}"
                 headers=self.headers,
                 callback=self.get_date
             )
@@ -44,15 +44,17 @@ class EuroMillionSpider(scrapy.Spider):
             )
     
     def get_numbers(self, response):
-        draw_date = response.xpath('//*[@id="content"]/div[@class="fx btwn wrapSM"]/div[@class="box half fx col jcen"]/div/div[@class="h3"]/text()').extract_first()
-        lottery_numbers = response.xpath('//*[@id="content"]/div[@class="fx btwn wrapSM"]/div[@class="box half fx col jcen"]/div/ul[@id="ballsAscending"]/li[@class="resultBall ball"]/text()').extract()
-        raffle_stars = response.xpath('//*[@id="content"]/div[@class="fx btwn wrapSM"]/div[@class="box half fx col jcen"]/div/ul[@id="ballsAscending"]/li[@class="resultBall lucky-star"]/text()').extract()
+        path = response.xpath('//*[@id="content"]/div[@class="fx btwn wrapSM"]/div[@class="box half fx col jcen"]')
+        
+        draw_date = path.xpath('//div/div[@class="h3"]/text()').extract_first()
+        lottery_numbers = path.xpath('//div/ul[@id="ballsAscending"]/li[@class="resultBall ball"]/text()').extract()
+        raffle_stars = path.xpath('//div/ul[@id="ballsAscending"]/li[@class="resultBall lucky-star"]/text()').extract()
 
-        yield DatabaseItem(
+        yield Database(
             {
             "draw_date": draw_date,
             "lottery_numbers": lottery_numbers,
             "raffle_stars": raffle_stars
         }
         )
-        
+    
