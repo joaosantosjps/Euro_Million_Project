@@ -1,5 +1,5 @@
 import scrapy
-from Data.items import Database
+from Project_data.items import Database
 
 
 class EuroMillionSpider(scrapy.Spider):
@@ -27,7 +27,7 @@ class EuroMillionSpider(scrapy.Spider):
         for years_link in list_yaers_links:
             
             yield scrapy.Request(
-                url=f"https://www.euro-millions.com/pt/arquivo-de-resultados-2020",   #"https://{self.allowed_domains[0]}{years_link}"
+                url=f"https://{self.allowed_domains[0]}{years_link}",             #"https://www.euro-millions.com/pt/arquivo-de-resultados-2020",
                 headers=self.headers,
                 callback=self.get_date
             )
