@@ -20,12 +20,21 @@ class EuroMillionPipeline():
         date = " ".join(item["draw_date"].split()[1:])
         format_date = datetime.strptime(date, "%d de %B de %Y").strftime("%d/%m/%Y")
         
-        item["format_date"] = format_date
+        item.pop('draw_date', None)
+        item["day_of_week"] = day_of_week
+        item["day"] = format_date.split("/")[0]
+        item["month"] = format_date.split("/")[1]
+        item["year"] = format_date.split("/")[2]
 
+
+        self.view(item)
+
+        return format_date
+    
+    def view(self, item):
         print(">>>>>>>>>>>>>>>>>>>>>>>>", item)
 
-        return item
-     
+
 """    def insert_data(self, item):
         connection = MongodbDatabase().connect_mongo()
         collection = MongodbDatabase().collection_create(connection)
