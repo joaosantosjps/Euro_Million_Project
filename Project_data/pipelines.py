@@ -9,7 +9,6 @@ class EuroMillionPipeline():
         item["lottery_numbers"] = [int(num) for num in item["lottery_numbers"]]
         item["raffle_stars"] = [int(num) for num in item["raffle_stars"]]
 
-        #self.insert_data(item=item)
         self.process_date(item=item)
 
         return item
@@ -22,23 +21,19 @@ class EuroMillionPipeline():
         
         item.pop('draw_date', None)
         item["day_of_week"] = day_of_week
-        item["day"] = format_date.split("/")[0]
-        item["month"] = format_date.split("/")[1]
-        item["year"] = format_date.split("/")[2]
+        item["day"] = int(format_date.split("/")[0])
+        item["month"] = int(format_date.split("/")[1])
+        item["year"] = int(format_date.split("/")[2])
 
 
-        self.view(item)
+        self.insert_data(item)
 
-        return format_date
-    
-    def view(self, item):
-        print(">>>>>>>>>>>>>>>>>>>>>>>>", item)
+        return item
 
-
-"""    def insert_data(self, item):
+    def insert_data(self, item):
         connection = MongodbDatabase().connect_mongo()
         collection = MongodbDatabase().collection_create(connection)
         
         collection.insert_one(dict(item))
 
-        return item"""
+        return item

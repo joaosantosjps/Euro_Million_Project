@@ -27,7 +27,7 @@ class EuroMillionSpider(scrapy.Spider):
         for years_link in list_yaers_links:
             
             yield scrapy.Request(
-                url=f"https://{self.allowed_domains[0]}{years_link}",             #"https://www.euro-millions.com/pt/arquivo-de-resultados-2020",
+                url=f"https://{self.allowed_domains[0]}{years_link}",
                 headers=self.headers,
                 callback=self.get_date
             )
@@ -38,7 +38,7 @@ class EuroMillionSpider(scrapy.Spider):
         for date_link in list_dates_links:
             
             yield scrapy.Request(
-                url=f"https://{self.allowed_domains[0]}{date_link}", #"https://www.euro-millions.com/pt/resultados/29-12-2020", 
+                url=f"https://{self.allowed_domains[0]}{date_link}", 
                 headers=self.headers,
                 callback=self.get_numbers       
             )
@@ -49,12 +49,13 @@ class EuroMillionSpider(scrapy.Spider):
         draw_date = path.xpath('//div/div[@class="h3"]/text()').extract_first()
         lottery_numbers = path.xpath('//div/ul[@id="ballsAscending"]/li[@class="resultBall ball"]/text()').extract()
         raffle_stars = path.xpath('//div/ul[@id="ballsAscending"]/li[@class="resultBall lucky-star"]/text()').extract()
+        draw_numbers = response.xpath('/html/head/meta[@name="description"]/@content').extract_first().split(":")[1].replace(".", " ")
 
         yield Database(
             {
             "draw_date": draw_date,
             "lottery_numbers": lottery_numbers,
-            "raffle_stars": raffle_stars
-        }
-        )
+            "raffle_stars": raffle_stars,
+            "draw_numbers": draw_numbers
+        })
     
